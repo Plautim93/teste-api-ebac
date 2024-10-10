@@ -2,17 +2,29 @@ pipeline {
     agent any
 
 	stages {
-        stage('Setup') {
-            steps {
-                git branch: 'main', url: 'https://github.com/Plautim93/teste-api-ebac.git'
-                bat 'npm install'
+        stage('Clonar repositório'){
+            steps{
+                git branch:'main', url:'https://github.com/Plautim93/teste-api-ebac'
+
             }
         }
-        stage('Test') {
-            steps {
-		bat '''set NO_COLOR=1
-		npx cypress run'''
-            }
+            stage('Instalar dependencias'){
+                steps{
+                bat 'npm install'
+         }
+
+     }
+        stage('Subir servidor'){
+            steps{
+            bat 'start/b npm start'
         }
     }
-}
+        stage('Realizar os testes'){
+            steps {
+            bat 'npm run cy:run'
+            }
+         }
+
+    }
+
+};
